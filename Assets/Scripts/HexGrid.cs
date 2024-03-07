@@ -20,8 +20,8 @@ public enum HexDirection {
 
 public class HexGrid<T> {
     // flat top hex
-    public const float widthMult = 2;
-    public const float heightMult = 1.73205080757f;
+    public const float widthMult = 1;
+    public const float heightMult = 1.73205080757f / 2;
 
     public int Width { get; private set; }
     public int Height { get; private set; }
