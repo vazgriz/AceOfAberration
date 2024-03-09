@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +40,10 @@ public struct HexCoord {
 
     public static HexCoord operator + (HexCoord a, HexCoord b) {
         return new HexCoord(a.q + b.q, a.r + b.r, a.s + b.s);
+    }
+
+    public static HexCoord operator  * (HexCoord a, int b) {
+        return new HexCoord(a.q * b, a.r * b, a.s * b);
     }
 
     public static HexCoord FromOffset(Vector2Int pos) {
@@ -90,7 +95,7 @@ public abstract class HexGrid {
         new HexCoord(-1,  0,  1),
         new HexCoord(-1,  1,  0),
         new HexCoord( 0,  1, -1),
-        new HexCoord( 1, -1,  0),
+        new HexCoord( 1,  0, -1),
         new HexCoord( 1, -1,  0)
     };
 
@@ -122,6 +127,10 @@ public abstract class HexGrid {
         return new Vector2(x, y);
     }
 
+    public static RingEnumerator EnumerateRing(HexCoord center, int radius) {
+        return new RingEnumerator(center, radius);
+    }
+
     /// <summary>
     /// Rotate <i>position</i> around the origin based on the angle between North and <i>direction</i>
     /// </summary>
@@ -146,6 +155,70 @@ public abstract class HexGrid {
                 return new HexCoord(-position.r, -position.s, -position.q);
             default:
                 throw new ArgumentException(nameof(direction));
+        }
+    }
+
+    public struct RingEnumerator : IEnumerator<HexCoord>, IEnumerable<HexCoord> {
+        int radius;
+        int count;
+        int total;
+        HexDirection direction;
+        HexCoord start;
+        HexCoord current;
+        HexCoord last;
+
+        public HexCoord Current => last;
+
+        object IEnumerator.Current => throw new NotImplementedException();
+
+        public RingEnumerator(HexCoord center, int radius) {
+            if (radius < 0) throw new InvalidOperationException(nameof(radius));
+
+            this.radius = radius;
+            count = 0;
+            total = 0;
+            direction = HexDirection.SouthWest;
+
+            HexCoord offset = HexGrid.GetOffsetCubic(HexDirection.North) * radius;
+            start = center + offset;
+            current = start;
+            last = start;
+        }
+
+        public bool MoveNext() {
+            if (total > 0 && total >= radius * 6) return false;
+
+            if (count == radius) {
+                // start a new direction
+                direction = (HexDirection)HexGrid.Mod(((int)direction + 1), 6);
+                count = 0;
+            }
+
+            last = current;
+            HexCoord offset = HexGrid.GetOffsetCubic(direction);
+            current += offset;
+
+            count++;
+            total++;
+
+            return true;
+        }
+
+        public void Reset() {
+            current = start;
+            count = 0;
+        }
+
+        public void Dispose() {
+            // do nothing
+        }
+
+        public IEnumerator<HexCoord> GetEnumerator() {
+            return this;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            throw new NotImplementedException();
         }
     }
 }

@@ -461,6 +461,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5068784129f46e43ae075a44d4996e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: 50
+  plane: {fileID: 6878513982430503742}
+  markerPrefab: {fileID: 7808639144836852038, guid: 191589dd0c8dbe246b0afa0d346d3d51, type: 3}
+  markerOffset: {x: 0, y: -2, z: 0}
 --- !u!1001 &6878513982430503741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -518,3 +522,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6970d4913878d748b88402aaf3f4ea5, type: 3}
+--- !u!114 &6878513982430503742 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -8906911115585272459, guid: c6970d4913878d748b88402aaf3f4ea5, type: 3}
+  m_PrefabInstance: {fileID: 6878513982430503741}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02c08869cdee74f935413e6cd4b36d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
