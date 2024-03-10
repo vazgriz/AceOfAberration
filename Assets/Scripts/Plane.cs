@@ -1,9 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
 public class Plane : MonoBehaviour {
+    [Serializable]
+    struct AudioData {
+        public AudioSource audioSource;
+        public float volume;
+
+        public void Play() {
+            if (audioSource != null) {
+                audioSource.Play();
+            }
+        }
+
+        public void Stop() {
+            if (audioSource != null) {
+                audioSource.Stop();
+            }
+        }
+
+        public void SetFadeVolume(float value) {
+            if (audioSource != null) {
+                audioSource.volume = volume * value;
+            }
+        }
+    }
+
+    [SerializeField]
+    float audioFadeTime;
+    [SerializeField]
+    AudioData propellerAudio;
+    [SerializeField]
+    AudioData windAudio;
+
+    float audioFadeTarget;
+    float audioFadeTimer;
+
     HexCoord positionHex;
     HexDirection planeDirection;
     new Transform transform;
@@ -33,6 +68,7 @@ public class Plane : MonoBehaviour {
 
     void Update() {
         UpdateManeuver();
+        UpdateAudio();
     }
 
     public void PlayManeuver(ManeuverData data) {
@@ -59,6 +95,8 @@ public class Plane : MonoBehaviour {
         targetRotation = Quaternion.Euler(0, targetAngle, 0);
 
         planeDirection = direction;
+
+        PlayWindProp();
     }
 
     void UpdateManeuver() {
@@ -81,8 +119,53 @@ public class Plane : MonoBehaviour {
             maneuvering = false;
             transform.position = targetPosition;
             transform.rotation = targetRotation;
+
+            FadeOutWindProp();
         }
 
         manueverTimer += Time.deltaTime;
+    }
+
+    void PlayWindProp() {
+        audioFadeTimer = 0;
+        audioFadeTarget = 1;
+
+        propellerAudio.Play();
+        propellerAudio.SetFadeVolume(0);
+        windAudio.Play();
+        windAudio.SetFadeVolume(0);
+    }
+
+    void FadeOutWindProp() {
+        audioFadeTimer = 0;
+        audioFadeTarget = 0;
+    }
+
+    void StopWindProp() {
+        propellerAudio.Stop();
+        windAudio.Stop();
+    }
+
+    void SetWindPropFade(float t) {
+        propellerAudio.SetFadeVolume(t);
+        windAudio.SetFadeVolume(t);
+    }
+
+    void UpdateAudio() {
+        float fade;
+
+        if (audioFadeTimer > audioFadeTime || audioFadeTime == 0) {
+            fade = audioFadeTarget;
+        } else {
+            fade = Mathf.InverseLerp(1 - audioFadeTarget, audioFadeTarget, audioFadeTimer / audioFadeTime);
+        }
+
+        SetWindPropFade(fade);
+
+        if (audioFadeTarget == 0 && fade == 0) {
+            StopWindProp();
+        }
+
+        audioFadeTimer += Time.deltaTime;
     }
 }
