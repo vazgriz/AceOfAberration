@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class Plane : MonoBehaviour {
     HexCoord positionHex;
     HexDirection planeDirection;
-    Transform planeTransform;
+    new Transform transform;
 
     bool maneuvering;
+    ManeuverData currentManeuver;
+    Spline currentSpline;
+
     float manueverTimer;
     Vector3 startPosition;
     Vector3 targetPosition;
-    float startAngle;
-    float targetAngle;
+    Quaternion startRotation;
+    Quaternion targetRotation;
 
     public HexCoord PositionHex {
         get {
@@ -24,7 +28,7 @@ public class Plane : MonoBehaviour {
     public float ManeuverTime { get; set; }
 
     void Start() {
-        planeTransform = GetComponent<Transform>();
+        transform = GetComponent<Transform>();
     }
 
     void Update() {
@@ -35,6 +39,8 @@ public class Plane : MonoBehaviour {
         if (maneuvering) return;
         maneuvering = true;
         manueverTimer = 0;
+        currentManeuver = data;
+        currentSpline = data.spline.GetComponent<SplineContainer>().Spline;
 
         HexCoord localOffset = HexCoord.FromOffset(data.finalOffset);
         HexCoord offset = HexGrid.Rotate(localOffset, HexGrid.InvertDirection(planeDirection));
@@ -44,11 +50,13 @@ public class Plane : MonoBehaviour {
         HexDirection direction = HexGrid.RotateDirection(planeDirection, localDirection);
 
         Vector2 pos = HexGrid.GetCenter(positionHex) * GridSize;
-        startPosition = planeTransform.position;
+        startPosition = transform.position;
         targetPosition = new Vector3(pos.x, 0, pos.y);
 
-        startAngle = HexGrid.GetAngle(planeDirection);
-        targetAngle = HexGrid.GetAngle(direction);
+        float startAngle = HexGrid.GetAngle(planeDirection);
+        float targetAngle = HexGrid.GetAngle(direction);
+        startRotation = Quaternion.Euler(0, startAngle, 0);
+        targetRotation = Quaternion.Euler(0, targetAngle, 0);
 
         planeDirection = direction;
     }
@@ -57,11 +65,15 @@ public class Plane : MonoBehaviour {
         if (!maneuvering) return;
 
         float t = Mathf.InverseLerp(0, ManeuverTime, manueverTimer);
-        planeTransform.position = Vector3.Lerp(startPosition, targetPosition, t);
-        planeTransform.rotation = Quaternion.Slerp(Quaternion.Euler(0, startAngle, 0), Quaternion.Euler(0, targetAngle, 0), t);
+        float smoothT = Mathf.SmoothStep(0, 1, t);
+        currentSpline.Evaluate(smoothT, out var pos, out var forward, out var up);
+        transform.position = startPosition + GridSize * (startRotation * pos);
+        transform.rotation = startRotation * Quaternion.LookRotation(forward, up);
 
         if (t >= 1) {
             maneuvering = false;
+            transform.position = targetPosition;
+            transform.rotation = targetRotation;
         }
 
         manueverTimer += Time.deltaTime;

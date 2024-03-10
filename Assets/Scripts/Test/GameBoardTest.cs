@@ -52,7 +52,7 @@ public class GameBoardTest : MonoBehaviour {
             foreach (var offset in HexGrid.EnumerateRing(plane.PositionHex, i)) {
                 var marker = markers[index];
                 var pos = HexGrid.GetCenter(HexCoord.ToOffset(offset));
-                marker.position = new Vector3(pos.x, 0, pos.y) * gridSize;
+                marker.position = markerOffset + new Vector3(pos.x, 0, pos.y) * gridSize;
                 index++;
             }
         }

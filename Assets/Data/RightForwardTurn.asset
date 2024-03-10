@@ -17,16 +17,4 @@ MonoBehaviour:
   visualOffset: {x: 1, y: 2}
   finalOffset: {x: 1, y: 1}
   finalDirection: 5
-  spline:
-    m_EditModeType: 1
-    m_Knots: []
-    m_MetaData: []
-    m_Closed: 0
-    m_IntData:
-      m_Data: []
-    m_FloatData:
-      m_Data: []
-    m_Float4Data:
-      m_Data: []
-    m_ObjectData:
-      m_Data: []
+  spline: {fileID: 104098366894279805, guid: 2e9ff0ceb38162f46809f3e072dd11fd, type: 3}

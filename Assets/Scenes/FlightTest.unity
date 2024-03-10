@@ -523,6 +523,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7640eb1ef8ea03418c3460ddcbce468, type: 2}
   - {fileID: 11400000, guid: 81fdc4634bc0fd74d9dc02b3af9cde47, type: 2}
   - {fileID: 11400000, guid: 64b359687f7a36e43b1bcdf901783ccc, type: 2}
+  - {fileID: 11400000, guid: b1eda3fc0cf8f044db5e8536772d6bc6, type: 2}
   gridSize: 54
   gameBoard: {fileID: 1617204252}
   maneuverHolder: {fileID: 1137185003}

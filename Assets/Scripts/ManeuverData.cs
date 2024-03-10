@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Splines;
 
 [CreateAssetMenu(menuName = "Data/Maneuver Data")]
 public class ManeuverData : ScriptableObject {
@@ -10,7 +9,7 @@ public class ManeuverData : ScriptableObject {
     public Vector2Int visualOffset;
     public Vector2Int finalOffset;
     public HexDirection finalDirection;
-    public Spline spline;
+    public GameObject spline;
 
     public HexCoord VisualOffsetHex {
         get {
