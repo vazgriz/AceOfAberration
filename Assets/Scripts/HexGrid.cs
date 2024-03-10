@@ -127,6 +127,10 @@ public abstract class HexGrid {
         return new Vector2(x, y);
     }
 
+    public static Vector2 GetCenter(HexCoord pos) {
+        return GetCenter(HexCoord.ToOffset(pos));
+    }
+
     public static RingEnumerator EnumerateRing(HexCoord center, int radius) {
         return new RingEnumerator(center, radius);
     }
