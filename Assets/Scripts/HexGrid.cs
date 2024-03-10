@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public struct HexCoord {
@@ -99,6 +100,15 @@ public abstract class HexGrid {
         new HexCoord( 1, -1,  0)
     };
 
+    static readonly float[] directionAngles = {
+        0,
+        300,
+        240,
+        180,
+        120,
+        60
+    };
+
     public static Vector2Int GetOffset(HexDirection direction) {
         return neighborsOffset[(int)direction];
     }
@@ -131,8 +141,26 @@ public abstract class HexGrid {
         return GetCenter(HexCoord.ToOffset(pos));
     }
 
-    public static RingEnumerator EnumerateRing(HexCoord center, int radius) {
-        return new RingEnumerator(center, radius);
+    public static float GetAngle(HexDirection direction) {
+        return directionAngles[(int)direction];
+    }
+
+    public static HexDirection InvertDirection(HexDirection direction) {
+        switch (direction) {
+            default:
+            case HexDirection.North:
+                return HexDirection.North;
+            case HexDirection.NorthWest:
+                return HexDirection.NorthEast;
+            case HexDirection.SouthWest:
+                return HexDirection.SouthEast;
+            case HexDirection.South:
+                return HexDirection.South;
+            case HexDirection.SouthEast:
+                return HexDirection.SouthWest;
+            case HexDirection.NorthEast:
+                return HexDirection.NorthWest;
+        }
     }
 
     /// <summary>
@@ -160,6 +188,14 @@ public abstract class HexGrid {
             default:
                 throw new ArgumentException(nameof(direction));
         }
+    }
+
+    public static HexDirection RotateDirection(HexDirection direction, HexDirection rotation) {
+        return (HexDirection)Mod((int)direction + (int)rotation, 6);
+    }
+
+    public static RingEnumerator EnumerateRing(HexCoord center, int radius) {
+        return new RingEnumerator(center, radius);
     }
 
     public struct RingEnumerator : IEnumerator<HexCoord>, IEnumerable<HexCoord> {

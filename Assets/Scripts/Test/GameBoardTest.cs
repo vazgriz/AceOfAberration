@@ -11,16 +11,27 @@ public class GameBoardTest : MonoBehaviour {
     GameObject markerPrefab;
     [SerializeField]
     Vector3 markerOffset;
+    [SerializeField]
+    float maneuverTime;
+    [SerializeField]
+    new Camera camera;
+    [SerializeField]
+    Vector3 cameraOffset;
 
     List<Transform> markers;
-    HexCoord planePos;
+    Transform cameraTransform;
 
     const int radius = 3;
 
     void Start() {
         markers = new List<Transform>();
+        cameraTransform = camera.GetComponent<Transform>();
 
-        for (int i = 0; i <= 3; i++) {
+        cameraTransform.SetParent(plane.GetComponent<Transform>());
+        cameraTransform.localPosition =  cameraOffset;
+        cameraTransform.localRotation = Quaternion.identity;
+
+        for (int i = 0; i <= radius; i++) {
             foreach (var offset in HexGrid.EnumerateRing(new HexCoord(), i)) {
                 var go = Instantiate(markerPrefab);
                 var t = go.GetComponent<Transform>();
@@ -28,19 +39,27 @@ public class GameBoardTest : MonoBehaviour {
             }
         }
 
+        plane.GridSize = gridSize;
+        plane.ManeuverTime = maneuverTime;
+
         MoveMarkers();
     }
 
     void MoveMarkers() {
         int index = 0;
 
-        for (int i = 0; i <= 3; i++) {
-            foreach (var offset in HexGrid.EnumerateRing(planePos, i)) {
+        for (int i = 0; i <= radius; i++) {
+            foreach (var offset in HexGrid.EnumerateRing(plane.PositionHex, i)) {
                 var marker = markers[index];
                 var pos = HexGrid.GetCenter(HexCoord.ToOffset(offset));
                 marker.position = new Vector3(pos.x, 0, pos.y) * gridSize;
                 index++;
             }
         }
+    }
+
+    public void PlayManeuver(ManeuverData data) {
+        plane.PlayManeuver(data);
+        MoveMarkers();
     }
 }

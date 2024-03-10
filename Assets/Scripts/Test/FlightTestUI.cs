@@ -9,6 +9,8 @@ public class FlightTestUI : MonoBehaviour {
     List<ManeuverData> maneuvers;
     [SerializeField]
     float gridSize;
+    [SerializeField]
+    GameBoardTest gameBoard;
 
     [SerializeField]
     RectTransform maneuverHolder;
@@ -27,8 +29,13 @@ public class FlightTestUI : MonoBehaviour {
     GameObject CreateManeuverIcon(ManeuverData data) {
         var go = Instantiate(iconPrefab);
         var maneuverIcon = go.GetComponent<ManeuverIcon>();
-        maneuverIcon.SetImage(data.icon);
+        maneuverIcon.SetManeuverData(data);
+        maneuverIcon.OnClicked += OnClick;
 
         return go;
+    }
+
+    void OnClick(ManeuverData data) {
+        gameBoard.PlayManeuver(data);
     }
 }

@@ -25,6 +25,79 @@ public class HexGridTest {
     }
 
     [Test]
+    public void RotateDirectionTest() {
+        HexDirection[] directions = new HexDirection[] {
+            HexDirection.North,
+            HexDirection.NorthWest,
+            HexDirection.SouthWest,
+            HexDirection.South,
+            HexDirection.SouthEast,
+            HexDirection.NorthEast,
+        };
+
+        HexDirection[] expected = new HexDirection[] {
+            HexDirection.North,
+            HexDirection.NorthWest,
+            HexDirection.SouthWest,
+            HexDirection.South,
+            HexDirection.SouthEast,
+            HexDirection.NorthEast,
+
+            HexDirection.NorthWest,
+            HexDirection.SouthWest,
+            HexDirection.South,
+            HexDirection.SouthEast,
+            HexDirection.NorthEast,
+            HexDirection.North,
+
+            HexDirection.SouthWest,
+            HexDirection.South,
+            HexDirection.SouthEast,
+            HexDirection.NorthEast,
+            HexDirection.North,
+            HexDirection.NorthWest,
+
+            HexDirection.South,
+            HexDirection.SouthEast,
+            HexDirection.NorthEast,
+            HexDirection.North,
+            HexDirection.NorthWest,
+            HexDirection.SouthWest,
+
+            HexDirection.SouthEast,
+            HexDirection.NorthEast,
+            HexDirection.North,
+            HexDirection.NorthWest,
+            HexDirection.SouthWest,
+            HexDirection.South,
+
+            HexDirection.NorthEast,
+            HexDirection.North,
+            HexDirection.NorthWest,
+            HexDirection.SouthWest,
+            HexDirection.South,
+            HexDirection.SouthEast,
+        };
+
+        Assert.AreEqual(36, expected.Length);
+
+        int count = 0;
+
+        for (int i = 0; i < directions.Length; i++) {
+            for (int j = 0; j < directions.Length; j++) {
+                var dir = directions[i];
+                var rot = directions[j];
+                var exp = expected[count];
+
+                Assert.AreEqual(exp, HexGrid.RotateDirection(dir, rot));
+                count++;
+            }
+        }
+
+        Assert.AreEqual(36, count);
+    }
+
+    [Test]
     public void RingTest() {
         HexCoord pos = new HexCoord(-5, 2, 3);
 

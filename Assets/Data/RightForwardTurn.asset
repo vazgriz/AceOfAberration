@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d71fd4e342aa904a80d2eeeea574fe1, type: 3}
+  m_Name: RightForwardTurn
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: d56519fb68da5114e91377bcaa66dbfe, type: 3}
+  invertIcon: 0
+  visualOffset: {x: 1, y: 2}
+  finalOffset: {x: 1, y: 1}
+  finalDirection: 5
+  spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []

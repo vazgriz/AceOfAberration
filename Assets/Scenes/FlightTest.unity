@@ -522,7 +522,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7d47ff43a54a09346aa36ba0a999357c, type: 2}
   - {fileID: 11400000, guid: b7640eb1ef8ea03418c3460ddcbce468, type: 2}
   - {fileID: 11400000, guid: 81fdc4634bc0fd74d9dc02b3af9cde47, type: 2}
+  - {fileID: 11400000, guid: 64b359687f7a36e43b1bcdf901783ccc, type: 2}
   gridSize: 54
+  gameBoard: {fileID: 1617204252}
   maneuverHolder: {fileID: 1137185003}
 --- !u!114 &997408051
 MonoBehaviour:
@@ -637,6 +639,9 @@ MonoBehaviour:
   plane: {fileID: 6878513982430503742}
   markerPrefab: {fileID: 7808639144836852038, guid: 191589dd0c8dbe246b0afa0d346d3d51, type: 3}
   markerOffset: {x: 0, y: -2, z: 0}
+  maneuverTime: 5
+  camera: {fileID: 291137446}
+  cameraOffset: {x: 0, y: 3, z: -10}
 --- !u!1001 &6878513982430503741
 PrefabInstance:
   m_ObjectHideFlags: 0
