@@ -10,6 +10,8 @@ public class ManeuverData : ScriptableObject {
     public Vector2Int finalOffset;
     public HexDirection finalDirection;
     public GameObject spline;
+    public bool speedOverride;
+    public AnimationCurve speedCurve;
 
     public HexCoord VisualOffsetHex {
         get {

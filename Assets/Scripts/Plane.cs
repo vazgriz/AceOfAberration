@@ -65,7 +65,14 @@ public class Plane : MonoBehaviour {
         if (!maneuvering) return;
 
         float t = Mathf.InverseLerp(0, ManeuverTime, manueverTimer);
-        float smoothT = Mathf.SmoothStep(0, 1, t);
+        float smoothT;
+
+        if (currentManeuver.speedOverride) {
+            smoothT = currentManeuver.speedCurve.Evaluate(t);
+        } else {
+            smoothT = t;
+        }
+
         currentSpline.Evaluate(smoothT, out var pos, out var forward, out var up);
         transform.position = startPosition + GridSize * (startRotation * pos);
         transform.rotation = startRotation * Quaternion.LookRotation(forward, up);
