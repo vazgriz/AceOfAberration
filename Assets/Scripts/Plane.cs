@@ -78,23 +78,19 @@ public class Plane : MonoBehaviour {
         currentManeuver = data;
         currentSpline = data.spline.GetComponent<SplineContainer>().Spline;
 
-        HexCoord localOffset = HexCoord.FromOffset(data.finalOffset);
-        HexCoord offset = HexGrid.Rotate(localOffset, HexGrid.InvertDirection(planeDirection));
-        positionHex += offset;
-
-        HexDirection localDirection = data.finalDirection;
-        HexDirection direction = HexGrid.RotateDirection(planeDirection, localDirection);
+        ManeuverState maneuverState = GameBoard.CalculateManeuver(data, planeDirection);
 
         Vector2 pos = HexGrid.GetCenter(positionHex) * GridSize;
         startPosition = transform.position;
         targetPosition = new Vector3(pos.x, 0, pos.y);
 
         float startAngle = HexGrid.GetAngle(planeDirection);
-        float targetAngle = HexGrid.GetAngle(direction);
+        float targetAngle = HexGrid.GetAngle(maneuverState.finalState.direction);
         startRotation = Quaternion.Euler(0, startAngle, 0);
         targetRotation = Quaternion.Euler(0, targetAngle, 0);
 
-        planeDirection = direction;
+        positionHex += maneuverState.finalState.position;
+        planeDirection = maneuverState.finalState.direction;
 
         PlayWindProp();
     }

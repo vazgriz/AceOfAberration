@@ -43,6 +43,10 @@ public struct HexCoord {
         return new HexCoord(a.q + b.q, a.r + b.r, a.s + b.s);
     }
 
+    public static HexCoord operator - (HexCoord a, HexCoord b) {
+        return new HexCoord(a.q - b.q, a.r - b.r, a.s - b.s);
+    }
+
     public static HexCoord operator  * (HexCoord a, int b) {
         return new HexCoord(a.q * b, a.r * b, a.s * b);
     }
