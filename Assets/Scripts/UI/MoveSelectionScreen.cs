@@ -5,6 +5,8 @@ using TMPro;
 
 public class MoveSelectionScreen : MonoBehaviour {
     [SerializeField]
+    GameUI gameUI;
+    [SerializeField]
     Transform gridTransform;
     [SerializeField]
     GameObject playerIcon;
@@ -26,6 +28,8 @@ public class MoveSelectionScreen : MonoBehaviour {
     TextMeshProUGUI infoTitle;
     [SerializeField]
     TextMeshProUGUI infoDescription;
+    [SerializeField]
+    GameObject confirmPanel;
 
     new Transform transform;
     List<GameObject> gridIcons;
@@ -33,6 +37,10 @@ public class MoveSelectionScreen : MonoBehaviour {
 
     Transform playerIconFutureTransform;
     Transform opponentIconTransform;
+
+    ManeuverData lockedManeuver;
+
+    Plane plane;
 
     void Start() {
         transform = GetComponent<Transform>();
@@ -66,6 +74,7 @@ public class MoveSelectionScreen : MonoBehaviour {
         if (plane == null) return;
         if (plane.ManeuverList == null) return;
 
+        this.plane = plane;
         ManeuverList list = plane.ManeuverList;
 
         foreach (var maneuver in list.maneuvers) {
@@ -74,6 +83,7 @@ public class MoveSelectionScreen : MonoBehaviour {
             var icon = go.GetComponent<ManeuverIcon>();
 
             icon.SetManeuverData(maneuver);
+            icon.OnClicked += OnClick;
             icon.OnHoverEnter += OnHoverEnter;
             icon.OnHoverExit += OnHoverExit;
 
@@ -87,8 +97,27 @@ public class MoveSelectionScreen : MonoBehaviour {
         }
     }
 
-    void ShowMoves() {
+    public void ResetScreen() {
+        confirmPanel.SetActive(false);
+        playerIconFuture.SetActive(false);
+        opponentIcon.SetActive(false);
+    }
 
+    public void ShowScreen() {
+
+    }
+
+    public void ConfirmManeuver() {
+        if (lockedManeuver == null) return;
+
+        gameUI.OnMoveSelected(lockedManeuver);
+        lockedManeuver = null;
+    }
+
+    void OnClick(ManeuverData maneuver) {
+        lockedManeuver = maneuver;
+
+        confirmPanel.SetActive(true);
     }
 
     void OnHoverEnter(ManeuverData maneuver) {
@@ -104,9 +133,16 @@ public class MoveSelectionScreen : MonoBehaviour {
         playerIconFutureTransform.localPosition = gridSize * position;
         playerIconFutureTransform.rotation = Quaternion.Euler(0, 0, angle);
         playerIconFuture.SetActive(true);
+
+        if (lockedManeuver != null && lockedManeuver != maneuver) {
+            lockedManeuver = null;
+            confirmPanel.SetActive(false);
+        }
     }
 
     void OnHoverExit(ManeuverData maneuver) {
-        playerIconFuture.SetActive(false);
+        if (lockedManeuver == null) {
+            playerIconFuture.SetActive(false);
+        }
     }
 }

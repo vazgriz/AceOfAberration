@@ -11,8 +11,6 @@ public class GameUI : MonoBehaviour {
     GameObject minimapPanel;
     [SerializeField]
     MoveSelectionScreen moveSelectionPanel;
-    [SerializeField]
-    GameObject moveConfirmPanel;
 
     [SerializeField]
     bool openMainMenuOnStart;
@@ -43,14 +41,6 @@ public class GameUI : MonoBehaviour {
     public void OnMoveSelected(ManeuverData data) {
         gameFlow.SetPlayerMove(data);
 
-        if (gameFlow.SinglePlayer) {
-            OnMoveConfirmed();
-        } else {
-            TogglePanels(moveConfirmPanel);
-        }
-    }
-
-    public void OnMoveConfirmed() {
         TogglePanels(minimapPanel);
     }
 
@@ -66,7 +56,6 @@ public class GameUI : MonoBehaviour {
         TogglePanel(targetPanel, mainMenuGO);
         TogglePanel(targetPanel, minimapPanel);
         TogglePanel(targetPanel, moveSelectionGO);
-        TogglePanel(targetPanel, moveConfirmPanel);
     }
 
     void TogglePanel(GameObject targetPanel, GameObject panel) {
