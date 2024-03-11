@@ -13,6 +13,11 @@ public class ManeuverData : ScriptableObject {
     public bool speedOverride;
     public AnimationCurve speedCurve;
 
+    [TextArea]
+    public string infoTitle;
+    [TextArea]
+    public string infoDescription;
+
     public HexCoord VisualOffsetHex {
         get {
             return HexCoord.FromOffset(visualOffset);

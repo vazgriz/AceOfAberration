@@ -30,6 +30,9 @@ public class Plane : MonoBehaviour {
     }
 
     [SerializeField]
+    ManeuverList maneuverList;
+
+    [SerializeField]
     float audioFadeTime;
     [SerializeField]
     AudioData propellerAudio;
@@ -53,6 +56,12 @@ public class Plane : MonoBehaviour {
     Quaternion startRotation;
     Quaternion targetRotation;
 
+    public ManeuverList ManeuverList {
+        get {
+            return maneuverList;
+        }
+    }
+
     public HexCoord PositionHex {
         get {
             return positionHex;
@@ -65,7 +74,7 @@ public class Plane : MonoBehaviour {
     public float GridSize { get; set; }
     public float ManeuverTime { get; set; }
 
-    void Start() {
+    public void Init() {
         transform = GetComponent<Transform>();
     }
 

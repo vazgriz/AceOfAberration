@@ -113,6 +113,15 @@ public abstract class HexGrid {
         60
     };
 
+    static readonly Vector2[] edgeCenters = {
+        new Vector2( 0,                   0.5f  * heightMult),
+        new Vector2(-0.375f * widthMult,  0.25f * heightMult),
+        new Vector2(-0.375f * widthMult, -0.25f * heightMult),
+        new Vector2( 0,                  -0.5f  * heightMult),
+        new Vector2( 0.375f * widthMult, -0.25f * heightMult),
+        new Vector2( 0.375f * widthMult,  0.25f * heightMult)
+    };
+
     public static Vector2Int GetOffset(HexDirection direction) {
         return neighborsOffset[(int)direction];
     }
@@ -143,6 +152,10 @@ public abstract class HexGrid {
 
     public static Vector2 GetCenter(HexCoord pos) {
         return GetCenter(HexCoord.ToOffset(pos));
+    }
+
+    public static Vector2 GetEdgeCenter(HexDirection direction) {
+        return edgeCenters[(int)direction];
     }
 
     public static float GetAngle(HexDirection direction) {

@@ -6,34 +6,72 @@ public class GameUI : MonoBehaviour {
     [SerializeField]
     GameFlow gameFlow;
     [SerializeField]
-    GameObject mainMenuPanel;
+    MainMenu mainMenuPanel;
     [SerializeField]
     GameObject minimapPanel;
     [SerializeField]
-    GameObject moveSelectionPanel;
+    MoveSelectionScreen moveSelectionPanel;
     [SerializeField]
     GameObject moveConfirmPanel;
 
+    [SerializeField]
+    bool openMainMenuOnStart;
+
+    GameObject mainMenuGO;
+    GameObject moveSelectionGO;
+
     void Start() {
-        OpenMainMenu();
+        mainMenuGO = mainMenuPanel.gameObject;
+        moveSelectionGO = moveSelectionPanel.gameObject;
+
+        gameFlow.OnStateChanged += OnGameStateChanged;
+        gameFlow.OnPlaneSpawned += OnPlaneSpawned;
+
+        if (openMainMenuOnStart) {
+            OpenMainMenu();
+        }
     }
 
     public void OpenMainMenu() {
-        mainMenuPanel.SetActive(true);
+        TogglePanels(mainMenuGO);
     }
 
     public void OnBeginMoveSelection() {
-        moveSelectionPanel.SetActive(true);
+        TogglePanels(moveSelectionGO);
     }
 
     public void OnMoveSelected(ManeuverData data) {
         gameFlow.SetPlayerMove(data);
 
-        moveSelectionPanel.SetActive(false);
-        moveConfirmPanel.SetActive(true);
+        if (gameFlow.SinglePlayer) {
+            OnMoveConfirmed();
+        } else {
+            TogglePanels(moveConfirmPanel);
+        }
     }
 
     public void OnMoveConfirmed() {
-        moveConfirmPanel.SetActive(false);
+        TogglePanels(minimapPanel);
+    }
+
+    void OnGameStateChanged(GameFlow.GameState state) {
+
+    }
+
+    void OnPlaneSpawned(GameObject planePrefab) {
+        moveSelectionPanel.SetPlane(planePrefab.GetComponent<Plane>());
+    }
+
+    void TogglePanels(GameObject targetPanel) {
+        TogglePanel(targetPanel, mainMenuGO);
+        TogglePanel(targetPanel, minimapPanel);
+        TogglePanel(targetPanel, moveSelectionGO);
+        TogglePanel(targetPanel, moveConfirmPanel);
+    }
+
+    void TogglePanel(GameObject targetPanel, GameObject panel) {
+        if (panel != null) {
+            panel.SetActive(panel == targetPanel);
+        }
     }
 }

@@ -25,6 +25,8 @@ public class GameBoard : MonoBehaviour {
     [SerializeField]
     float maneuverTime;
     [SerializeField]
+    new CameraController camera;
+    [SerializeField]
     Vector2Int playerStartOffset;
     [SerializeField]
     Vector2Int opponentStartOffset;
@@ -63,24 +65,26 @@ public class GameBoard : MonoBehaviour {
         UpdateManeuver();
     }
 
-    Plane SpawnPlane(GameObject prefab) {
+    Plane SpawnPlane(GameObject prefab, Vector2Int position, HexDirection direction) {
+        if (prefab == null) return null;
+
         var go = Instantiate(prefab);
         var plane = go.GetComponent<Plane>();
+
+        plane.Init();
+
+        plane.ManeuverTime = ManeuverTime;
+        plane.GridSize = GridSize;
+        plane.PositionHex = HexCoord.FromOffset(playerStartOffset);
 
         return plane;
     }
 
     public void SetPlanes(GameObject playerPrefab, GameObject opponentPrefab) {
-        playerPlane = SpawnPlane(playerPrefab);
-        opponentPlane = SpawnPlane(opponentPrefab);
+        playerPlane = SpawnPlane(playerPrefab, playerStartOffset, HexDirection.North);
+        opponentPlane = SpawnPlane(opponentPrefab, opponentStartOffset, HexDirection.South);
 
-        playerPlane.ManeuverTime = ManeuverTime;
-        playerPlane.GridSize = GridSize;
-        playerPlane.PositionHex = HexCoord.FromOffset(playerStartOffset);
-
-        opponentPlane.ManeuverTime = ManeuverTime;
-        opponentPlane.GridSize = GridSize;
-        opponentPlane.PositionHex = HexCoord.FromOffset(opponentStartOffset);
+        camera.SetAttachment(playerPlane.transform);
     }
 
     public void ClearGameState() {

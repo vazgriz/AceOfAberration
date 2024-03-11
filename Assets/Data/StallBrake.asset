@@ -18,3 +18,12 @@ MonoBehaviour:
   finalOffset: {x: 0, y: 1}
   finalDirection: 0
   spline: {fileID: 5213453768388628157, guid: 5d6534dc9d4b96041ab7de9fd447f0cc, type: 3}
+  speedOverride: 0
+  speedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  infoTitle: Stall Brake
+  infoDescription: 'Resulting speed: Slow'

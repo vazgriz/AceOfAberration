@@ -14,7 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: d56519fb68da5114e91377bcaa66dbfe, type: 3}
   invertIcon: 1
-  visualOffset: {x: -1, y: 2}
+  visualOffset: {x: -1, y: 1}
   finalOffset: {x: -1, y: 1}
   finalDirection: 1
   spline: {fileID: 104098366894279805, guid: f01def4f5dd4bb346b7165b318b11fdb, type: 3}
+  speedOverride: 0
+  speedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  infoTitle: Turn
+  infoDescription: 

@@ -19,12 +19,13 @@ public class GameFlow : MonoBehaviour {
     ManeuverData playerManeuver;
     ManeuverData opponentManeuver;
 
+    public bool SinglePlayer { get; set; }
+
     public event Action<GameState> OnStateChanged = delegate { };
+    public event Action<GameObject> OnPlaneSpawned = delegate { };
 
     void Start() {
         gameBoard = GetComponent<GameBoard>();
-
-        GoToMainMenu();
     }
 
     void Update() {
@@ -58,6 +59,8 @@ public class GameFlow : MonoBehaviour {
     public void SetPlanes(GameObject playerPrefab, GameObject opponentPrefab) {
         gameBoard.SetPlanes(playerPrefab, opponentPrefab);
         GoToState(GameState.Idle);
+
+        OnPlaneSpawned(playerPrefab);
     }
 
     public void SetPlayerMove(ManeuverData playerMove) {

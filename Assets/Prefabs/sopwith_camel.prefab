@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02c08869cdee74f935413e6cd4b36d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maneuverList: {fileID: 11400000, guid: 00fd9bcc4903ba647b7060c1840aa8cf, type: 2}
   audioFadeTime: 0.25
   propellerAudio:
     audioSource: {fileID: 4249670558797413019}
