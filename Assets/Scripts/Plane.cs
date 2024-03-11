@@ -57,6 +57,9 @@ public class Plane : MonoBehaviour {
         get {
             return positionHex;
         }
+        set {
+            SetPositionHex(value);
+        }
     }
     
     public float GridSize { get; set; }
@@ -69,6 +72,11 @@ public class Plane : MonoBehaviour {
     void Update() {
         UpdateManeuver();
         UpdateAudio();
+    }
+
+    void SetPositionHex(HexCoord pos) {
+        positionHex = pos;
+        transform.position = HexGrid.GetCenter(pos) * GridSize;
     }
 
     public void PlayManeuver(ManeuverData data) {

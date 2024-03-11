@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameFlow;
 
 public struct PlaneState {
     public HexCoord position;
@@ -18,7 +19,99 @@ public struct EncodedManeuver {
     public int posIndex;
 }
 
-public class GameBoard {
+public class GameBoard : MonoBehaviour {
+    [SerializeField]
+    float gridSize;
+    [SerializeField]
+    float maneuverTime;
+    [SerializeField]
+    Vector2Int playerStartOffset;
+    [SerializeField]
+    Vector2Int opponentStartOffset;
+
+    Plane playerPlane;
+    Plane opponentPlane;
+
+    bool playingManeuver;
+    float maneuverTimer;
+
+    public float ManeuverTime {
+        get {
+            return maneuverTime;
+        }
+    }
+
+    public float ManeuverTimer {
+        get {
+            return maneuverTimer;
+        }
+    }
+
+    public float GridSize {
+        get {
+            return gridSize;
+        }
+    }
+
+    public bool PlayingManeuver {
+        get {
+            return playingManeuver;
+        }
+    }
+
+    void Update() {
+        UpdateManeuver();
+    }
+
+    Plane SpawnPlane(GameObject prefab) {
+        var go = Instantiate(prefab);
+        var plane = go.GetComponent<Plane>();
+
+        return plane;
+    }
+
+    public void SetPlanes(GameObject playerPrefab, GameObject opponentPrefab) {
+        playerPlane = SpawnPlane(playerPrefab);
+        opponentPlane = SpawnPlane(opponentPrefab);
+
+        playerPlane.ManeuverTime = ManeuverTime;
+        playerPlane.GridSize = GridSize;
+        playerPlane.PositionHex = HexCoord.FromOffset(playerStartOffset);
+
+        opponentPlane.ManeuverTime = ManeuverTime;
+        opponentPlane.GridSize = GridSize;
+        opponentPlane.PositionHex = HexCoord.FromOffset(opponentStartOffset);
+    }
+
+    public void ClearGameState() {
+        ClearPlane(ref playerPlane);
+        ClearPlane(ref opponentPlane);
+    }
+
+    void ClearPlane(ref Plane plane) {
+        if (plane == null) return;
+        Destroy(plane.gameObject);
+        plane = null;
+    }
+
+    public void PlayManeuvers(ManeuverData playerMove, ManeuverData opponentMove) {
+        playerPlane.PlayManeuver(playerMove);
+        opponentPlane.PlayManeuver(opponentMove);
+
+        playingManeuver = true;
+        maneuverTimer = 0;
+    }
+
+    void UpdateManeuver() {
+        if (!playingManeuver) return;
+
+        if (maneuverTimer > ManeuverTime) {
+            playingManeuver = false;
+        }
+
+        maneuverTimer += Time.deltaTime;
+    }
+
     /// <summary>
     /// Calculates the result of a maneuver relative (plane's position is considered to be the origin)
     /// </summary>

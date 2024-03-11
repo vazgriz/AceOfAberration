@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameFlow : MonoBehaviour {
     public enum GameState {
+        Menu,
         Idle,
         SelectMove,
         PlayManeuvers,
@@ -16,13 +17,24 @@ public class GameFlow : MonoBehaviour {
     GameState state;
 
     ManeuverData playerManeuver;
+    ManeuverData opponentManeuver;
 
     public event Action<GameState> OnStateChanged = delegate { };
 
     void Start() {
         gameBoard = GetComponent<GameBoard>();
 
-        GoToState(GameState.Idle);
+        GoToMainMenu();
+    }
+
+    void Update() {
+        switch (state) {
+            case GameState.PlayManeuvers:
+                UpdatePlayManeuvers();
+                break;
+            default:
+                break;
+        }
     }
 
     public void GoToState(GameState value) {
@@ -31,11 +43,39 @@ public class GameFlow : MonoBehaviour {
         OnStateChanged(value);
     }
 
-    public void SelectPlayerMove(ManeuverData playerMove) {
+    public void GoToMainMenu() {
+        ClearGameState();
+        GoToState(GameState.Menu);
+    }
+
+    void ClearGameState() {
+        gameBoard.ClearGameState();
+
+        playerManeuver = null;
+        opponentManeuver = null;
+    }
+
+    public void SetPlanes(GameObject playerPrefab, GameObject opponentPrefab) {
+        gameBoard.SetPlanes(playerPrefab, opponentPrefab);
+        GoToState(GameState.Idle);
+    }
+
+    public void SetPlayerMove(ManeuverData playerMove) {
         playerManeuver = playerMove;
     }
 
-    public void SelectMoves(ManeuverData playerMove, ManeuverData opponentMove) {
+    public void SetOpponentMove(ManeuverData opponentMove) {
+        opponentManeuver = opponentMove;
+    }
+
+    public void PlayManeuvers() {
+        gameBoard.PlayManeuvers(playerManeuver, opponentManeuver);
         GoToState(GameState.PlayManeuvers);
+    }
+
+    void UpdatePlayManeuvers() {
+        if (!gameBoard.PlayingManeuver) {
+            GoToState(GameState.PlayResults);
+        }
     }
 }
