@@ -29,3 +29,7 @@ Bullet impact:
 Menu sounds:
     Attribution 4.0
     https://freesound.org/people/Erokia/packs/26604/
+    
+Menu icons:
+    Creative Commons 0
+    https://kenney.nl/assets/game-icons

@@ -8,7 +8,7 @@ public class GameUI : MonoBehaviour {
     [SerializeField]
     MainMenu mainMenuPanel;
     [SerializeField]
-    GameObject minimapPanel;
+    GameObject sidePanel;
     [SerializeField]
     MoveSelectionScreen moveSelectionPanel;
 
@@ -38,10 +38,11 @@ public class GameUI : MonoBehaviour {
         TogglePanels(moveSelectionGO);
     }
 
-    public void OnMoveSelected(ManeuverData data) {
-        gameFlow.SetPlayerMove(data);
+    public void OnMoveSelected(ManeuverData playerMove, ManeuverData opponentMove) {
+        gameFlow.SetPlayerMove(playerMove, opponentMove);
+        gameFlow.PlayManeuvers();
 
-        TogglePanels(minimapPanel);
+        TogglePanels(sidePanel);
     }
 
     void OnGameStateChanged(GameFlow.GameState state) {
@@ -54,7 +55,7 @@ public class GameUI : MonoBehaviour {
 
     void TogglePanels(GameObject targetPanel) {
         TogglePanel(targetPanel, mainMenuGO);
-        TogglePanel(targetPanel, minimapPanel);
+        TogglePanel(targetPanel, sidePanel);
         TogglePanel(targetPanel, moveSelectionGO);
     }
 

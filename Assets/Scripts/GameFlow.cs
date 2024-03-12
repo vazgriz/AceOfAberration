@@ -63,12 +63,8 @@ public class GameFlow : MonoBehaviour {
         OnPlaneSpawned(playerPrefab);
     }
 
-    public void SetPlayerMove(ManeuverData playerMove) {
+    public void SetPlayerMove(ManeuverData playerMove, ManeuverData opponentMove) {
         playerManeuver = playerMove;
-    }
-
-    public void SetOpponentMove(ManeuverData opponentMove) {
-        opponentManeuver = opponentMove;
     }
 
     public void PlayManeuvers() {
@@ -78,7 +74,11 @@ public class GameFlow : MonoBehaviour {
 
     void UpdatePlayManeuvers() {
         if (!gameBoard.PlayingManeuver) {
-            GoToState(GameState.PlayResults);
+            FinishManeuvers();
         }
+    }
+
+    void FinishManeuvers() {
+        GoToState(GameState.PlayResults);
     }
 }

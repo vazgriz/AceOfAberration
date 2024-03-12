@@ -29,8 +29,16 @@ public class MoveSelectionScreen : MonoBehaviour {
     [SerializeField]
     TextMeshProUGUI infoDescription;
     [SerializeField]
+    GameObject confirmPanelSP;
+    [SerializeField]
+    GameObject confirmPanelMP;
+    [SerializeField]
+    SidePanel sidePanel;
+
+    GameObject selfGO;
     GameObject confirmPanel;
 
+    bool init;
     new Transform transform;
     List<GameObject> gridIcons;
     List<ManeuverIcon> maneuverIcons;
@@ -42,7 +50,11 @@ public class MoveSelectionScreen : MonoBehaviour {
 
     Plane plane;
 
-    void Start() {
+    void Init() {
+        if (init) return;
+        init = true;
+
+        selfGO = gameObject;
         transform = GetComponent<Transform>();
         gridIcons = new List<GameObject>();
         maneuverIcons = new List<ManeuverIcon>();
@@ -56,6 +68,12 @@ public class MoveSelectionScreen : MonoBehaviour {
         infoIcon.ShowImage(false);
         infoTitle.text = "";
         infoDescription.text = "";
+
+        confirmPanel = confirmPanelSP;
+    }
+        
+    void Start() {
+        Init();
 
         for (int i = 0; i <= radius; i++) {
             foreach (var pos in HexGrid.EnumerateRing(new HexCoord(), i)) {
@@ -73,6 +91,8 @@ public class MoveSelectionScreen : MonoBehaviour {
     public void SetPlane(Plane plane) {
         if (plane == null) return;
         if (plane.ManeuverList == null) return;
+
+        Init();
 
         this.plane = plane;
         ManeuverList list = plane.ManeuverList;
@@ -98,20 +118,38 @@ public class MoveSelectionScreen : MonoBehaviour {
     }
 
     public void ResetScreen() {
-        confirmPanel.SetActive(false);
+        confirmPanelSP.SetActive(false);
+        confirmPanelMP.SetActive(false);
         playerIconFuture.SetActive(false);
         opponentIcon.SetActive(false);
     }
 
-    public void ShowScreen() {
+    public void ConfigureSinglePlayer() {
+        confirmPanel = confirmPanelSP;
+    }
 
+    public void ConfigureMultiPlayer() {
+        confirmPanel = confirmPanelMP;
+    }
+
+    public void ShowScreen(bool value) {
+        if (value) {
+            ResetScreen();
+        }
+
+        selfGO.SetActive(value);
     }
 
     public void ConfirmManeuver() {
         if (lockedManeuver == null) return;
 
-        gameUI.OnMoveSelected(lockedManeuver);
+        gameUI.OnMoveSelected(lockedManeuver, null);
         lockedManeuver = null;
+    }
+
+    public void ExitScreen() {
+        ShowScreen(false);
+        sidePanel.ShowScreen(true);
     }
 
     void OnClick(ManeuverData maneuver) {

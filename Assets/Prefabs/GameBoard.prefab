@@ -156,7 +156,7 @@ MonoBehaviour:
   gridSize: 50
   maneuverTime: 5
   camera: {fileID: 0}
-  playerStartOffset: {x: 0, y: -2}
+  playerStartOffset: {x: -1, y: -2}
   opponentStartOffset: {x: 1, y: 2}
 --- !u!114 &5266590486557922840
 MonoBehaviour:

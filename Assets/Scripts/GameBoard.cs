@@ -99,8 +99,13 @@ public class GameBoard : MonoBehaviour {
     }
 
     public void PlayManeuvers(ManeuverData playerMove, ManeuverData opponentMove) {
-        playerPlane.PlayManeuver(playerMove);
-        opponentPlane.PlayManeuver(opponentMove);
+        if (playerPlane != null && playerMove != null) {
+            playerPlane.PlayManeuver(playerMove);
+        }
+
+        if (opponentPlane != null && opponentMove != null) {
+            opponentPlane.PlayManeuver(opponentMove);
+        }
 
         playingManeuver = true;
         maneuverTimer = 0;
@@ -169,16 +174,22 @@ public class GameBoard : MonoBehaviour {
 
     public static EncodedManeuver EncodeManeuver(PlaneState state) {
         EncodedManeuver result = new EncodedManeuver();
-        result.direction = state.direction;
-        result.posIndex = GetPosToIndexMap()[state.position];
+        HexDirection adjustedRotation = HexGrid.RotateDirection(state.direction, HexDirection.South);
+        HexCoord adjustedCoord = HexGrid.Rotate(state.position, HexDirection.South);
+
+        result.direction = adjustedRotation;
+        result.posIndex = GetPosToIndexMap()[adjustedCoord];
 
         return result;
     }
 
     public static PlaneState DecodeManeuver(EncodedManeuver encodedManeuver) {
         PlaneState result = new PlaneState();
-        result.direction = encodedManeuver.direction;
-        result.position = GetIndexToPosList()[encodedManeuver.posIndex];
+        HexDirection adjustedDirection = HexGrid.RotateDirection(encodedManeuver.direction, HexDirection.South);
+        HexCoord adjustedCoord = HexGrid.Rotate(GetIndexToPosList()[encodedManeuver.posIndex], HexDirection.South);
+
+        result.direction = adjustedDirection;
+        result.position = adjustedCoord;
 
         return result;
     }
