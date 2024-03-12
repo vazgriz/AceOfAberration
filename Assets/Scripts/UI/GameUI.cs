@@ -46,7 +46,13 @@ public class GameUI : MonoBehaviour {
     }
 
     void OnGameStateChanged(GameFlow.GameState state) {
-
+        if (state == GameFlow.GameState.Idle) {
+            if (gameFlow.SinglePlayer) {
+                moveSelectionPanel.ConfigureSinglePlayer();
+            } else {
+                moveSelectionPanel.ConfigureMultiPlayer();
+            }
+        }
     }
 
     void OnPlaneSpawned(Plane plane) {

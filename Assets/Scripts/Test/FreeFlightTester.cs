@@ -19,5 +19,6 @@ public class FreeFlightTester : MonoBehaviour {
         gameFlow = GetComponent<GameFlow>();
         gameFlow.SinglePlayer = true;
         gameFlow.SetPlanes(planePrefab, null);
+        gameFlow.StartGame();
     }
 }

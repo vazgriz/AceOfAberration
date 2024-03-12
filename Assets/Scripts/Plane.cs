@@ -81,6 +81,12 @@ public class Plane : MonoBehaviour {
         }
     }
 
+    public HexDirection Direction {
+        get {
+            return planeDirection;
+        }
+    }
+
     public bool Maneuvering {
         get {
             return maneuvering;

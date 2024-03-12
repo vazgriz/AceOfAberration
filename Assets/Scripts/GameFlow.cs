@@ -58,9 +58,12 @@ public class GameFlow : MonoBehaviour {
 
     public void SetPlanes(GameObject playerPrefab, GameObject opponentPrefab) {
         gameBoard.SetPlanes(playerPrefab, opponentPrefab);
-        GoToState(GameState.Idle);
 
         OnPlaneSpawned(gameBoard.PlayerPlane);
+    }
+
+    public void StartGame() {
+        GoToState(GameState.Idle);
     }
 
     public void SetPlayerMove(ManeuverData playerMove, ManeuverData opponentMove) {

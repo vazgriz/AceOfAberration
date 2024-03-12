@@ -15,6 +15,8 @@ public class MoveSelectionScreen : MonoBehaviour {
     [SerializeField]
     GameObject opponentIcon;
     [SerializeField]
+    GameObject opponentIconFuture;
+    [SerializeField]
     GameObject hexGridPrefab;
     [SerializeField]
     GameObject maneuverMarkerPrefab;
@@ -48,7 +50,8 @@ public class MoveSelectionScreen : MonoBehaviour {
 
     ManeuverData selectedManeuver;
 
-    Plane plane;
+    Plane playerPlane;
+    Plane opponentPlane;
 
     void Init() {
         if (init) return;
@@ -94,7 +97,7 @@ public class MoveSelectionScreen : MonoBehaviour {
 
         Init();
 
-        this.plane = plane;
+        playerPlane = plane;
         ManeuverList list = plane.ManeuverList;
 
         foreach (var maneuver in list.maneuvers) {
@@ -117,6 +120,10 @@ public class MoveSelectionScreen : MonoBehaviour {
         }
     }
 
+    public void SetOpponentPlane(Plane plane) {
+        opponentPlane = plane;
+    }
+
     public void ResetScreen() {
         confirmPanelSP.SetActive(false);
         confirmPanelMP.SetActive(false);
@@ -124,14 +131,28 @@ public class MoveSelectionScreen : MonoBehaviour {
         opponentIcon.SetActive(false);
 
         DisplayMoves();
+        DisplayOpponentPlane();
     }
 
     void DisplayMoves() {
         foreach (var icon in maneuverIcons) {
             ManeuverData data = icon.ManeuverData;
-            bool isValid = plane.IsManeuverValid(data);
+            bool isValid = playerPlane.IsManeuverValid(data);
             icon.gameObject.SetActive(isValid);
         }
+    }
+
+    void DisplayOpponentPlane() {
+        if (opponentPlane == null) return;
+
+        HexCoord relativePos = opponentPlane.PositionHex - playerPlane.PositionHex;
+        HexDirection direction = opponentPlane.Direction;
+        Vector2 position = HexGrid.GetCenter(relativePos);
+        float angle = HexGrid.GetAngle(HexGrid.InvertDirection(direction));
+
+        playerIconFutureTransform.localPosition = gridSize * position;
+        playerIconFutureTransform.rotation = Quaternion.Euler(0, 0, angle);
+        playerIconFuture.SetActive(true);
     }
 
     public void ConfigureSinglePlayer() {
@@ -143,7 +164,7 @@ public class MoveSelectionScreen : MonoBehaviour {
     }
 
     public bool ShowScreen(bool value) {
-        if (value && plane.Maneuvering) return false;
+        if (value && playerPlane.Maneuvering) return false;
 
         if (value) {
             ResetScreen();
