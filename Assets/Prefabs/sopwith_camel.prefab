@@ -103,10 +103,10 @@ MonoBehaviour:
   audioFadeTime: 0.25
   propellerAudio:
     audioSource: {fileID: 4249670558797413019}
-    volume: 0.5
+    volume: 1
   windAudio:
     audioSource: {fileID: 4666218765262509806}
-    volume: 0.5
+    volume: 1
   specialValidMoves: []
 --- !u!1 &2699964103987663984
 GameObject:

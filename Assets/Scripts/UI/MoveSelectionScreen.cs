@@ -46,7 +46,7 @@ public class MoveSelectionScreen : MonoBehaviour {
     Transform playerIconFutureTransform;
     Transform opponentIconTransform;
 
-    ManeuverData lockedManeuver;
+    ManeuverData selectedManeuver;
 
     Plane plane;
 
@@ -155,10 +155,10 @@ public class MoveSelectionScreen : MonoBehaviour {
     }
 
     public void ConfirmManeuver() {
-        if (lockedManeuver == null) return;
+        if (selectedManeuver == null) return;
 
-        gameUI.OnMoveSelected(lockedManeuver, null);
-        lockedManeuver = null;
+        gameUI.OnMoveSelected(selectedManeuver, null);
+        selectedManeuver = null;
     }
 
     public void ExitScreen() {
@@ -166,13 +166,7 @@ public class MoveSelectionScreen : MonoBehaviour {
         sidePanel.ShowScreen(true);
     }
 
-    void OnClick(ManeuverData maneuver) {
-        lockedManeuver = maneuver;
-
-        confirmPanel.SetActive(true);
-    }
-
-    void OnHoverEnter(ManeuverData maneuver) {
+    void DisplayInfo(ManeuverData maneuver) {
         infoIcon.ShowImage(true);
         infoIcon.SetManeuverData(maneuver);
         infoTitle.text = maneuver.infoTitle;
@@ -185,16 +179,23 @@ public class MoveSelectionScreen : MonoBehaviour {
         playerIconFutureTransform.localPosition = gridSize * position;
         playerIconFutureTransform.rotation = Quaternion.Euler(0, 0, angle);
         playerIconFuture.SetActive(true);
+    }
 
-        if (lockedManeuver != null && lockedManeuver != maneuver) {
-            lockedManeuver = null;
-            confirmPanel.SetActive(false);
-        }
+    void OnClick(ManeuverData maneuver) {
+        selectedManeuver = maneuver;
+
+        confirmPanel.SetActive(true);
+    }
+
+    void OnHoverEnter(ManeuverData maneuver) {
+        DisplayInfo(maneuver);
     }
 
     void OnHoverExit(ManeuverData maneuver) {
-        if (lockedManeuver == null) {
+        if (selectedManeuver == null) {
             playerIconFuture.SetActive(false);
+        } else {
+            DisplayInfo(selectedManeuver);
         }
     }
 }
