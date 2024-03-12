@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d71fd4e342aa904a80d2eeeea574fe1, type: 3}
-  m_Name: StallBrake
+  m_Name: AccelerateToCruise
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: cddce2ff393e3f54fa89e141c9dd9c17, type: 3}
+  icon: {fileID: 21300000, guid: 14cbcb503bcd5fa428c77840445b30c5, type: 3}
   invertIcon: 0
   visualOffset: {x: 0, y: 1}
   finalOffset: {x: 0, y: 1}
   finalDirection: 0
-  finalSpeed: 0
-  spline: {fileID: 5213453768388628157, guid: 5d6534dc9d4b96041ab7de9fd447f0cc, type: 3}
+  finalSpeed: 1
+  spline: {fileID: 5213453768388628157, guid: 7b8107b3cd9f06c4eb24f51eca4570e4, type: 3}
   speedOverride: 0
   speedCurve:
     serializedVersion: 2
@@ -26,8 +26,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  minSpeed: 1
-  maxSpeed: 1
+  minSpeed: 0
+  maxSpeed: 0
   isSpecial: 0
-  infoTitle: Stall Brake
-  infoDescription: 'Resulting speed: Slow'
+  infoTitle: Accelerate to Cruise
+  infoDescription: Move forward 1 spaces

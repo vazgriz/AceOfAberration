@@ -5,6 +5,12 @@ using UnityEngine;
 using UnityEngine.Splines;
 
 public class Plane : MonoBehaviour {
+    public enum PlaneSpeed {
+        Slow,
+        Cruise,
+        Fast
+    }
+
     [Serializable]
     struct AudioData {
         public AudioSource audioSource;
@@ -38,6 +44,8 @@ public class Plane : MonoBehaviour {
     AudioData propellerAudio;
     [SerializeField]
     AudioData windAudio;
+    [SerializeField]
+    List<ManeuverData> specialValidMoves;
 
     float audioFadeTarget;
     float audioFadeTimer;
@@ -56,6 +64,8 @@ public class Plane : MonoBehaviour {
     Quaternion startRotation;
     Quaternion targetRotation;
 
+    ManeuverData lastManeuver;
+
     public ManeuverList ManeuverList {
         get {
             return maneuverList;
@@ -70,9 +80,17 @@ public class Plane : MonoBehaviour {
             SetPositionHex(value);
         }
     }
+
+    public bool Maneuvering {
+        get {
+            return maneuvering;
+        }
+    }
     
     public float GridSize { get; set; }
     public float ManeuverTime { get; set; }
+
+    public PlaneSpeed Speed { get; private set; }
 
     public void Init() {
         transform = GetComponent<Transform>();
@@ -88,8 +106,44 @@ public class Plane : MonoBehaviour {
         transform.position = HexGrid.GetCenter(pos) * GridSize;
     }
 
-    public void PlayManeuver(ManeuverData data) {
-        if (maneuvering) return;
+    public bool IsSpecialManeuverValid() {
+        if (Speed == PlaneSpeed.Slow) return false;
+        if (lastManeuver != null) {
+            bool found = false;
+
+            foreach (var move in specialValidMoves) {
+                if (move == lastManeuver) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) return false;
+        }
+
+        return true;
+    }
+
+    public bool IsManeuverValid(ManeuverData data) {
+        if (data.isSpecial) {
+            return IsSpecialManeuverValid();
+        }
+
+        if ((int)Speed < (int)data.minSpeed) {
+            return false;
+        }
+
+        if ((int)Speed > (int)data.maxSpeed) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool PlayManeuver(ManeuverData data) {
+        if (maneuvering) return false;
+        if (!IsManeuverValid(data)) return false;
+
         maneuvering = true;
         manueverTimer = 0;
         currentManeuver = data;
@@ -110,6 +164,9 @@ public class Plane : MonoBehaviour {
         planeDirection = maneuverState.finalState.direction;
 
         PlayWindProp();
+        Speed = data.finalSpeed;
+
+        return true;
     }
 
     void UpdateManeuver() {

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d71fd4e342aa904a80d2eeeea574fe1, type: 3}
-  m_Name: StallBrake
+  m_Name: RightTurn
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: cddce2ff393e3f54fa89e141c9dd9c17, type: 3}
-  invertIcon: 0
-  visualOffset: {x: 0, y: 1}
-  finalOffset: {x: 0, y: 1}
-  finalDirection: 0
-  finalSpeed: 0
-  spline: {fileID: 5213453768388628157, guid: 5d6534dc9d4b96041ab7de9fd447f0cc, type: 3}
+  icon: {fileID: 21300000, guid: 1de2f80601350fc49b18f52afc88223b, type: 3}
+  invertIcon: 1
+  visualOffset: {x: 2, y: 1}
+  finalOffset: {x: 2, y: 1}
+  finalDirection: 5
+  finalSpeed: 1
+  spline: {fileID: 104098366894279805, guid: 32562b6013913b1418c6fa9d19804d02, type: 3}
   speedOverride: 0
   speedCurve:
     serializedVersion: 2
@@ -27,7 +27,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   minSpeed: 1
-  maxSpeed: 1
+  maxSpeed: 2
   isSpecial: 0
-  infoTitle: Stall Brake
-  infoDescription: 'Resulting speed: Slow'
+  infoTitle: Turn
+  infoDescription: 'Resulting speed: Cruise'

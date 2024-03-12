@@ -22,7 +22,7 @@ public class GameFlow : MonoBehaviour {
     public bool SinglePlayer { get; set; }
 
     public event Action<GameState> OnStateChanged = delegate { };
-    public event Action<GameObject> OnPlaneSpawned = delegate { };
+    public event Action<Plane> OnPlaneSpawned = delegate { };
 
     void Start() {
         gameBoard = GetComponent<GameBoard>();
@@ -60,7 +60,7 @@ public class GameFlow : MonoBehaviour {
         gameBoard.SetPlanes(playerPrefab, opponentPrefab);
         GoToState(GameState.Idle);
 
-        OnPlaneSpawned(playerPrefab);
+        OnPlaneSpawned(gameBoard.PlayerPlane);
     }
 
     public void SetPlayerMove(ManeuverData playerMove, ManeuverData opponentMove) {

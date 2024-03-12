@@ -49,8 +49,8 @@ public class GameUI : MonoBehaviour {
 
     }
 
-    void OnPlaneSpawned(GameObject planePrefab) {
-        moveSelectionPanel.SetPlane(planePrefab.GetComponent<Plane>());
+    void OnPlaneSpawned(Plane plane) {
+        moveSelectionPanel.SetPlane(plane);
     }
 
     void TogglePanels(GameObject targetPanel) {

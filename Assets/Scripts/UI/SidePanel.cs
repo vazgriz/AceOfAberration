@@ -5,6 +5,8 @@ using UnityEngine;
 public class SidePanel : MonoBehaviour {
     [SerializeField]
     MoveSelectionScreen maneuverScreen;
+    [SerializeField]
+    AudioSource errorSound;
 
     GameObject selfGO;
 
@@ -13,8 +15,13 @@ public class SidePanel : MonoBehaviour {
     }
 
     public void OnManueverClick() {
-        ShowScreen(false);
-        maneuverScreen.ShowScreen(true);
+        bool success = maneuverScreen.ShowScreen(true);
+
+        if (success) {
+            ShowScreen(false);
+        } else {
+            errorSound.Play();
+        }
     }
 
     public void OnHelpClick() {

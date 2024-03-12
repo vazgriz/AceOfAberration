@@ -7,8 +7,15 @@ public class ManeuverIcon : MonoBehaviour {
     [SerializeField]
     Image iconImage;
 
+    bool init;
     new RectTransform transform;
     ManeuverData maneuverData;
+
+    public ManeuverData ManeuverData {
+        get {
+            return maneuverData;
+        }
+    }
 
     public event Action<ManeuverData> OnClicked = delegate { };
     public event Action<ManeuverData> OnHoverEnter = delegate { };

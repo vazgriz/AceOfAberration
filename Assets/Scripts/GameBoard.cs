@@ -61,6 +61,12 @@ public class GameBoard : MonoBehaviour {
         }
     }
 
+    public Plane PlayerPlane {
+        get {
+            return playerPlane;
+        }
+    }
+
     void Update() {
         UpdateManeuver();
     }

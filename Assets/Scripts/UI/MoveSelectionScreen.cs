@@ -107,7 +107,7 @@ public class MoveSelectionScreen : MonoBehaviour {
             icon.OnHoverEnter += OnHoverEnter;
             icon.OnHoverExit += OnHoverExit;
 
-            HexDirection direction = (HexDirection)HexGrid.Mod((int)maneuver.finalDirection + 3, 6);
+            HexDirection direction = HexGrid.RotateDirection(maneuver.finalDirection, HexDirection.South);
             Vector2 position = HexGrid.GetCenter(maneuver.visualOffset) + HexGrid.GetEdgeCenter(direction);
 
             t.SetParent(transform);
@@ -122,6 +122,16 @@ public class MoveSelectionScreen : MonoBehaviour {
         confirmPanelMP.SetActive(false);
         playerIconFuture.SetActive(false);
         opponentIcon.SetActive(false);
+
+        DisplayMoves();
+    }
+
+    void DisplayMoves() {
+        foreach (var icon in maneuverIcons) {
+            ManeuverData data = icon.ManeuverData;
+            bool isValid = plane.IsManeuverValid(data);
+            icon.gameObject.SetActive(isValid);
+        }
     }
 
     public void ConfigureSinglePlayer() {
@@ -132,12 +142,16 @@ public class MoveSelectionScreen : MonoBehaviour {
         confirmPanel = confirmPanelMP;
     }
 
-    public void ShowScreen(bool value) {
+    public bool ShowScreen(bool value) {
+        if (value && plane.Maneuvering) return false;
+
         if (value) {
             ResetScreen();
         }
 
         selfGO.SetActive(value);
+
+        return true;
     }
 
     public void ConfirmManeuver() {

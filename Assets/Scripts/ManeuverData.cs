@@ -9,9 +9,13 @@ public class ManeuverData : ScriptableObject {
     public Vector2Int visualOffset;
     public Vector2Int finalOffset;
     public HexDirection finalDirection;
+    public Plane.PlaneSpeed finalSpeed;
     public GameObject spline;
     public bool speedOverride;
     public AnimationCurve speedCurve;
+    public Plane.PlaneSpeed minSpeed;
+    public Plane.PlaneSpeed maxSpeed;
+    public bool isSpecial;
 
     [TextArea]
     public string infoTitle;
