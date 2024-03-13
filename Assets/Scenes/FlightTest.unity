@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5068784129f46e43ae075a44d4996e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 50
+  gridSize: 10
   plane: {fileID: 6878513982430503742}
   markerPrefab: {fileID: 7808639144836852038, guid: 191589dd0c8dbe246b0afa0d346d3d51, type: 3}
   markerOffset: {x: 0, y: -2, z: 0}

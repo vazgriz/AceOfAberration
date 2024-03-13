@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d71fd4e342aa904a80d2eeeea574fe1, type: 3}
+  m_Name: RightFastMediumTurn
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 0b45afd91b82b2e46ad31f06ac288f11, type: 3}
+  invertIcon: 0
+  visualOffset: {x: 2, y: 2}
+  finalOffset: {x: 2, y: 2}
+  finalDirection: 1
+  finalSpeed: 2
+  spline: {fileID: 104098366894279805, guid: db394959c953cfc49ad77f0de894a22f, type: 3}
+  speedOverride: 0
+  speedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minSpeed: 2
+  maxSpeed: 2
+  isSpecial: 0
+  infoTitle: Turn
+  infoDescription: 'Resulting speed: Fast'
