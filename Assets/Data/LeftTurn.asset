@@ -19,10 +19,55 @@ MonoBehaviour:
   finalDirection: 1
   finalSpeed: 1
   spline: {fileID: 104098366894279805, guid: 2ef9954dd595bf94f819c803b53b4d54, type: 3}
-  speedOverride: 0
+  speedOverride: 1
   speedCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0.8322192
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.022366017
+      value: 0.018613428
+      inSlope: 0.89828527
+      outSlope: 0.89828527
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.20555134
+      value: 0.110119455
+      inSlope: 0.9091251
+      outSlope: 0.9091251
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6407309
+      value: 0.59592885
+      inSlope: 1.1205229
+      outSlope: 1.1205229
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.1247034
+      outSlope: 0
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

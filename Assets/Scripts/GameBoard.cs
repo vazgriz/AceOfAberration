@@ -81,7 +81,8 @@ public class GameBoard : MonoBehaviour {
 
         plane.ManeuverTime = ManeuverTime;
         plane.GridSize = GridSize;
-        plane.PositionHex = HexCoord.FromOffset(playerStartOffset);
+        plane.PositionHex = HexCoord.FromOffset(position);
+        plane.Direction = direction;
 
         return plane;
     }

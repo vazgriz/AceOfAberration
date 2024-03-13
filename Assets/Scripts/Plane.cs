@@ -85,6 +85,9 @@ public class Plane : MonoBehaviour {
         get {
             return planeDirection;
         }
+        set {
+            SetDirection(value);
+        }
     }
 
     public bool Maneuvering {
@@ -109,7 +112,14 @@ public class Plane : MonoBehaviour {
 
     void SetPositionHex(HexCoord pos) {
         positionHex = pos;
-        transform.position = HexGrid.GetCenter(pos) * GridSize;
+        Vector2 p = HexGrid.GetCenter(pos) * GridSize;
+        transform.position = new Vector3(p.x, 0, p.y);
+    }
+
+    void SetDirection(HexDirection direction) {
+        float targetAngle = HexGrid.GetAngle(direction);
+        Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
+        transform.rotation = rotation;
     }
 
     public bool IsSpecialManeuverValid() {
@@ -157,9 +167,10 @@ public class Plane : MonoBehaviour {
 
         ManeuverState maneuverState = GameBoard.CalculateManeuver(data, planeDirection);
 
-        Vector2 pos = HexGrid.GetCenter(positionHex) * GridSize;
+        HexCoord targetPosHex = positionHex + maneuverState.finalState.position;
+        Vector2 targetPos = HexGrid.GetCenter(targetPosHex) * GridSize;
         startPosition = transform.position;
-        targetPosition = new Vector3(pos.x, 0, pos.y);
+        targetPosition = new Vector3(targetPos.x, 0, targetPos.y);
 
         float startAngle = HexGrid.GetAngle(planeDirection);
         float targetAngle = HexGrid.GetAngle(maneuverState.finalState.direction);

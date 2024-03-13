@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 50
-  maneuverTime: 5
+  maneuverTime: 4
   camera: {fileID: 0}
   playerStartOffset: {x: -1, y: -2}
   opponentStartOffset: {x: 1, y: 2}
