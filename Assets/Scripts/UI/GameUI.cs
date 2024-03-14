@@ -11,6 +11,8 @@ public class GameUI : MonoBehaviour {
     GameObject sidePanel;
     [SerializeField]
     MoveSelectionScreen moveSelectionPanel;
+    [SerializeField]
+    Gauges gaugesPanel;
 
     [SerializeField]
     bool openMainMenuOnStart;
@@ -32,10 +34,17 @@ public class GameUI : MonoBehaviour {
 
     public void OpenMainMenu() {
         TogglePanels(mainMenuGO);
+        gaugesPanel.Show(false);
     }
 
     public void OpenSidePanel() {
         TogglePanels(sidePanel);
+    }
+
+    public void StartGame() {
+        OpenSidePanel();
+        gaugesPanel.Show(true);
+        gaugesPanel.SetSpeed(gameFlow.GameBoard.PlayerPlane.Speed);
     }
 
     public void OnBeginMoveSelection() {
@@ -47,6 +56,8 @@ public class GameUI : MonoBehaviour {
             gameFlow.PlayManeuvers();
 
             OpenSidePanel();
+
+            gaugesPanel.SetSpeed(gameFlow.GameBoard.PlayerPlane.Speed);
 
             return true;
         }

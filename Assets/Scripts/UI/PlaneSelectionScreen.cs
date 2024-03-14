@@ -15,6 +15,6 @@ public class PlaneSelectionScreen : MonoBehaviour {
     public void Confirm() {
         gameFlow.SetPlanes(playerSelector.GetSelection().prefab, opponentSelector.GetSelection().prefab);
         gameFlow.StartGame();
-        gameUI.OpenSidePanel();
+        gameUI.StartGame();
     }
 }

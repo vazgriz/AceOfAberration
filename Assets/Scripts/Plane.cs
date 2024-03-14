@@ -99,7 +99,7 @@ public class Plane : MonoBehaviour {
     public float GridSize { get; set; }
     public float ManeuverTime { get; set; }
 
-    public PlaneSpeed Speed { get; private set; }
+    public PlaneSpeed Speed { get; set; }
 
     public void Init() {
         transform = GetComponent<Transform>();

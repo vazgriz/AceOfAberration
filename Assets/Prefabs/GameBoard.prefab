@@ -150,6 +150,8 @@ MonoBehaviour:
   camera: {fileID: 8220386109832701484}
   playerStartOffset: {x: -1, y: -2}
   opponentStartOffset: {x: 1, y: 2}
+  startSpeed: 1
+  maneuverList: {fileID: 11400000, guid: 00fd9bcc4903ba647b7060c1840aa8cf, type: 2}
 --- !u!114 &5266590486557922840
 MonoBehaviour:
   m_ObjectHideFlags: 0

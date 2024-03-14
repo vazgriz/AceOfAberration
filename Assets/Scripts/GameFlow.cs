@@ -25,6 +25,12 @@ public class GameFlow : MonoBehaviour {
     public event Action<GameState> OnStateChanged = delegate { };
     public event Action<Plane> OnPlaneSpawned = delegate { };
 
+    public GameBoard GameBoard {
+        get {
+            return gameBoard;
+        }
+    }
+
     void Start() {
         gameBoard = GetComponent<GameBoard>();
     }

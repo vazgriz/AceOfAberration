@@ -465,10 +465,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1287253382345759698, guid: d59b66dfa7588f248be98d74a3de4a62, type: 3}
-      propertyPath: maneuverList
-      value: 
-      objectReference: {fileID: 11400000, guid: 00fd9bcc4903ba647b7060c1840aa8cf, type: 2}
     - target: {fileID: 6738783171276781198, guid: d59b66dfa7588f248be98d74a3de4a62, type: 3}
       propertyPath: m_Name
       value: GameBoard

@@ -33,6 +33,8 @@ public class GameBoard : MonoBehaviour {
     [SerializeField]
     Vector2Int opponentStartOffset;
     [SerializeField]
+    Plane.PlaneSpeed startSpeed;
+    [SerializeField]
     ManeuverList maneuverList;
 
     Plane playerPlane;
@@ -87,6 +89,7 @@ public class GameBoard : MonoBehaviour {
         plane.GridSize = GridSize;
         plane.PositionHex = HexCoord.FromOffset(position);
         plane.Direction = direction;
+        plane.Speed = startSpeed;
 
         return plane;
     }
