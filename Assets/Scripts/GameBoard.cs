@@ -125,10 +125,11 @@ public class GameBoard : MonoBehaviour {
             EncodedManeuver? encoded = ParseManeuver(opponentMoveCode);
             if (!encoded.HasValue) return false;
 
-            PlaneState state = DecodeManeuver(encoded.Value);
-            PlaneState localState = WorldToLocal(state, opponentPlane.Direction);
-            opponentState = LocalToWorld(localState, HexDirection.South);   // rotate opponent move by 180 degrees
+            PlaneState oppositeWorldSpace = DecodeManeuver(encoded.Value);
+            PlaneState worldState = RotateState(oppositeWorldSpace, HexDirection.South);   // rotate opponent world space by 180 degrees
+            PlaneState localState = WorldToLocal(worldState, opponentPlane.Direction);
 
+            opponentState = worldState;
             opponentMove = GetManeuverFromState(localState, maneuverList);
         }
 
@@ -141,7 +142,7 @@ public class GameBoard : MonoBehaviour {
             playerPlane.PlayManeuver(state, playerMove);
         }
 
-        if (opponentPlane != null && opponentMove != null) {
+        if (opponentPlane != null) {
             opponentPlane.PlayManeuver(opponentState, opponentMove);
         }
 
@@ -161,7 +162,9 @@ public class GameBoard : MonoBehaviour {
 
     public static ManeuverData GetManeuverFromState(PlaneState state, ManeuverList list) {
         foreach (var data in list.maneuvers) {
-            if (state.position == HexCoord.FromOffset(data.finalOffset)
+            HexCoord coord = HexCoord.FromOffset(data.finalOffset);
+            if (state.position == coord
+                && state.direction == data.finalDirection
                 && state.speed == data.finalSpeed)
             {
                 return data;
@@ -293,20 +296,24 @@ public class GameBoard : MonoBehaviour {
         return null;
     }
 
-    public static PlaneState LocalToWorld(PlaneState state, HexDirection direction) {
-        PlaneState local = state;
-        local.position = HexGrid.Rotate(state.position, direction);
-        local.direction = HexGrid.RotateDirection(state.direction, direction);
+    public static PlaneState RotateState(PlaneState state, HexDirection direction) {
+        PlaneState result = state;
+        result.position = HexGrid.Rotate(state.position, direction);
+        result.direction = HexGrid.RotateDirection(state.direction, direction);
 
-        return local;
+        return result;
+    }
+
+    public static PlaneState LocalToWorld(PlaneState state, HexDirection direction) {
+        return RotateState(state, direction);
     }
 
     public static PlaneState WorldToLocal(PlaneState state, HexDirection direction) {
-        PlaneState world = state;
+        PlaneState result = state;
         HexDirection invRotation = HexGrid.InvertDirection(direction);
-        world.position = HexGrid.Rotate(state.position, invRotation);
-        world.direction = HexGrid.RotateDirection(state.direction, invRotation);
+        result.position = HexGrid.Rotate(state.position, direction);
+        result.direction = HexGrid.RotateDirection(state.direction, invRotation);
 
-        return world;
+        return result;
     }
 }

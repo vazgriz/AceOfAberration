@@ -236,10 +236,9 @@ public class MoveSelectionScreen : MonoBehaviour {
         confirmPanel.SetActive(true);
 
         if (!singlePlayer) {
-            ManeuverState localState = GameBoard.CalculateManeuver(selectedManeuver, playerPlane.Direction, playerPlane.Speed);
-            PlaneState state = GameBoard.LocalToWorld(localState.finalState, playerPlane.Direction);
+            ManeuverState state = GameBoard.CalculateManeuver(selectedManeuver, playerPlane.Direction, playerPlane.Speed);
 
-            EncodedManeuver encoded = GameBoard.EncodeManeuver(state);
+            EncodedManeuver encoded = GameBoard.EncodeManeuver(state.finalState);
             playerMoveLabel.text = GameBoard.PrintManeuver(encoded);
         }
     }

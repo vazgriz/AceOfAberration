@@ -117,6 +117,7 @@ public class Plane : MonoBehaviour {
     }
 
     void SetDirection(HexDirection direction) {
+        planeDirection = direction;
         float targetAngle = HexGrid.GetAngle(direction);
         Quaternion rotation = Quaternion.Euler(0, targetAngle, 0);
         transform.rotation = rotation;

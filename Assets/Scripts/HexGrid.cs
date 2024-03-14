@@ -186,20 +186,18 @@ public abstract class HexGrid {
     /// <param name="direction"></param>
     /// <returns></returns>
     public static HexCoord Rotate(HexCoord position, HexDirection direction) {
-        int rotations = (int)direction;
-
-        switch (rotations) {
-            case 0:
+        switch (direction) {
+            case HexDirection.North:
                 return position;
-            case 1:
+            case HexDirection.NorthWest:
                 return new HexCoord(-position.s, -position.q, -position.r);
-            case 2:
+            case HexDirection.SouthWest:
                 return new HexCoord(position.r, position.s, position.q);
-            case 3:
+            case HexDirection.South:
                 return new HexCoord(-position.q, -position.r, -position.s);
-            case 4:
+            case HexDirection.SouthEast:
                 return new HexCoord(position.s, position.q, position.r);
-            case 5:
+            case HexDirection.NorthEast:
                 return new HexCoord(-position.r, -position.s, -position.q);
             default:
                 throw new ArgumentException(nameof(direction));
