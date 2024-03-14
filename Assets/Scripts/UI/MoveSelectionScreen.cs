@@ -7,6 +7,8 @@ public class MoveSelectionScreen : MonoBehaviour {
     [SerializeField]
     GameUI gameUI;
     [SerializeField]
+    AudioSource errorSound;
+    [SerializeField]
     Transform gridTransform;
     [SerializeField]
     GameObject playerIcon;
@@ -31,14 +33,19 @@ public class MoveSelectionScreen : MonoBehaviour {
     [SerializeField]
     TextMeshProUGUI infoDescription;
     [SerializeField]
+    SidePanel sidePanel;
+    [SerializeField]
     GameObject confirmPanelSP;
     [SerializeField]
     GameObject confirmPanelMP;
     [SerializeField]
-    SidePanel sidePanel;
+    TextMeshProUGUI playerMoveLabel;
+    [SerializeField]
+    TMP_InputField opponentMoveInput;
 
     GameObject selfGO;
     GameObject confirmPanel;
+    bool singlePlayer;
 
     bool init;
     new Transform transform;
@@ -129,6 +136,7 @@ public class MoveSelectionScreen : MonoBehaviour {
         confirmPanelMP.SetActive(false);
         playerIconFuture.SetActive(false);
         opponentIcon.SetActive(false);
+        opponentMoveInput.text = "";
 
         DisplayMoves();
         DisplayOpponentPlane();
@@ -157,10 +165,12 @@ public class MoveSelectionScreen : MonoBehaviour {
 
     public void ConfigureSinglePlayer() {
         confirmPanel = confirmPanelSP;
+        singlePlayer = true;
     }
 
     public void ConfigureMultiPlayer() {
         confirmPanel = confirmPanelMP;
+        singlePlayer = false;
     }
 
     public bool ShowScreen(bool value) {
@@ -176,10 +186,28 @@ public class MoveSelectionScreen : MonoBehaviour {
     }
 
     public void ConfirmManeuver() {
+        if (singlePlayer) {
+            ConfirmSinglePlayer();
+        } else {
+            ConfirmMultiPlayer();
+        }
+    }
+
+    void ConfirmSinglePlayer() {
         if (selectedManeuver == null) return;
 
         gameUI.OnMoveSelected(selectedManeuver, null);
         selectedManeuver = null;
+    }
+
+    void ConfirmMultiPlayer() {
+        if (selectedManeuver == null) return;
+
+        if (gameUI.OnMoveSelected(selectedManeuver, opponentMoveInput.text)) {
+            selectedManeuver = null;
+        } else {
+            errorSound.Play();
+        }
     }
 
     public void ExitScreen() {
@@ -206,6 +234,14 @@ public class MoveSelectionScreen : MonoBehaviour {
         selectedManeuver = maneuver;
 
         confirmPanel.SetActive(true);
+
+        if (!singlePlayer) {
+            ManeuverState localState = GameBoard.CalculateManeuver(selectedManeuver, playerPlane.Direction, playerPlane.Speed);
+            PlaneState state = GameBoard.LocalToWorld(localState.finalState, playerPlane.Direction);
+
+            EncodedManeuver encoded = GameBoard.EncodeManeuver(state);
+            playerMoveLabel.text = GameBoard.PrintManeuver(encoded);
+        }
     }
 
     void OnHoverEnter(ManeuverData maneuver) {

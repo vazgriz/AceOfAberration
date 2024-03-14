@@ -156,32 +156,34 @@ public class Plane : MonoBehaviour {
         return true;
     }
 
-    public bool PlayManeuver(ManeuverData data) {
+    public bool PlayManeuver(PlaneState finalState, ManeuverData data) {
         if (maneuvering) return false;
-        if (!IsManeuverValid(data)) return false;
+
+        if (data != null) {
+            if (!IsManeuverValid(data)) return false;
+
+            currentManeuver = data;
+            currentSpline = data.spline.GetComponent<SplineContainer>().Spline;
+        }
 
         maneuvering = true;
         manueverTimer = 0;
-        currentManeuver = data;
-        currentSpline = data.spline.GetComponent<SplineContainer>().Spline;
 
-        ManeuverState maneuverState = GameBoard.CalculateManeuver(data, planeDirection);
-
-        HexCoord targetPosHex = positionHex + maneuverState.finalState.position;
+        HexCoord targetPosHex = positionHex + finalState.position;
         Vector2 targetPos = HexGrid.GetCenter(targetPosHex) * GridSize;
         startPosition = transform.position;
         targetPosition = new Vector3(targetPos.x, 0, targetPos.y);
 
         float startAngle = HexGrid.GetAngle(planeDirection);
-        float targetAngle = HexGrid.GetAngle(maneuverState.finalState.direction);
+        float targetAngle = HexGrid.GetAngle(finalState.direction);
         startRotation = Quaternion.Euler(0, startAngle, 0);
         targetRotation = Quaternion.Euler(0, targetAngle, 0);
 
-        positionHex += maneuverState.finalState.position;
-        planeDirection = maneuverState.finalState.direction;
+        positionHex += finalState.position;
+        planeDirection = finalState.direction;
 
         PlayWindProp();
-        Speed = data.finalSpeed;
+        Speed = finalState.speed;
 
         return true;
     }
@@ -192,20 +194,25 @@ public class Plane : MonoBehaviour {
         float t = Mathf.InverseLerp(0, ManeuverTime, manueverTimer);
         float smoothT;
 
-        if (currentManeuver.speedOverride) {
-            smoothT = currentManeuver.speedCurve.Evaluate(t);
-        } else {
-            smoothT = t;
-        }
+        if (currentManeuver != null) {
+            if (currentManeuver.speedOverride) {
+                smoothT = currentManeuver.speedCurve.Evaluate(t);
+            } else {
+                smoothT = t;
+            }
 
-        currentSpline.Evaluate(smoothT, out var pos, out var forward, out var up);
-        transform.position = startPosition + GridSize * (startRotation * pos);
-        transform.rotation = startRotation * Quaternion.LookRotation(forward, up);
+            currentSpline.Evaluate(smoothT, out var pos, out var forward, out var up);
+            transform.position = startPosition + GridSize * (startRotation * pos);
+            transform.rotation = startRotation * Quaternion.LookRotation(forward, up);
+        }
 
         if (t >= 1) {
             maneuvering = false;
             transform.position = targetPosition;
             transform.rotation = targetRotation;
+
+            currentManeuver = null;
+            currentSpline = null;
 
             FadeOutWindProp();
         }

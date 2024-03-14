@@ -17,6 +17,7 @@ public class GameFlow : MonoBehaviour {
     GameState state;
 
     ManeuverData playerManeuver;
+    PlaneState opponentState;
     ManeuverData opponentManeuver;
 
     public bool SinglePlayer { get; set; }
@@ -66,12 +67,22 @@ public class GameFlow : MonoBehaviour {
         GoToState(GameState.Idle);
     }
 
-    public void SetPlayerMove(ManeuverData playerMove, ManeuverData opponentMove) {
-        playerManeuver = playerMove;
+    public bool SetPlayerMove(ManeuverData playerMove, string opponentMoveCode) {
+        bool success = gameBoard.ValidateManeuvers(playerMove, opponentMoveCode, out PlaneState opponentState, out ManeuverData opponentMove);
+
+        if (success) {
+            playerManeuver = playerMove;
+            opponentManeuver = opponentMove;
+            this.opponentState = opponentState;
+
+            return true;
+        }
+
+        return false;
     }
 
     public void PlayManeuvers() {
-        gameBoard.PlayManeuvers(playerManeuver, opponentManeuver);
+        gameBoard.PlayManeuvers(playerManeuver, opponentState, opponentManeuver);
         GoToState(GameState.PlayManeuvers);
     }
 

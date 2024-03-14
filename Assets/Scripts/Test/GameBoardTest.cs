@@ -59,7 +59,8 @@ public class GameBoardTest : MonoBehaviour {
     }
 
     public void PlayManeuver(ManeuverData data) {
-        plane.PlayManeuver(data);
+        ManeuverState state = GameBoard.CalculateManeuver(data, plane.Direction, plane.Speed);
+        plane.PlayManeuver(state.finalState, data);
         MoveMarkers();
     }
 }

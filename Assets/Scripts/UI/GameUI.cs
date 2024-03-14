@@ -34,15 +34,24 @@ public class GameUI : MonoBehaviour {
         TogglePanels(mainMenuGO);
     }
 
+    public void OpenSidePanel() {
+        TogglePanels(sidePanel);
+    }
+
     public void OnBeginMoveSelection() {
         TogglePanels(moveSelectionGO);
     }
 
-    public void OnMoveSelected(ManeuverData playerMove, ManeuverData opponentMove) {
-        gameFlow.SetPlayerMove(playerMove, opponentMove);
-        gameFlow.PlayManeuvers();
+    public bool OnMoveSelected(ManeuverData playerMove, string opponentMoveCode) {
+        if (gameFlow.SetPlayerMove(playerMove, opponentMoveCode)) {
+            gameFlow.PlayManeuvers();
 
-        TogglePanels(sidePanel);
+            OpenSidePanel();
+
+            return true;
+        }
+
+        return false;
     }
 
     void OnGameStateChanged(GameFlow.GameState state) {
